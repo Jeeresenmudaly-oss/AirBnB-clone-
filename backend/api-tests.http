@@ -1,0 +1,102 @@
+### Airbnb Clone API — request collection
+### Use with the VS Code "REST Client" extension (click "Send Request"),
+### or copy these into Postman.
+### After logging in, copy the returned token into the @token variable below.
+
+@baseUrl = http://localhost:5000
+@token = PASTE_TOKEN_HERE
+
+### 0. Health check
+GET {{baseUrl}}/
+
+### 1. Register a new user
+POST {{baseUrl}}/api/users/register
+Content-Type: application/json
+
+{
+  "username": "Test User",
+  "email": "test@airbnb.com",
+  "password": "password123",
+  "role": "host"
+}
+
+### 2. Login (copy "token" from the response into @token above)
+POST {{baseUrl}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "jane@airbnb.com",
+  "password": "password321"
+}
+
+### 3. Get my profile
+GET {{baseUrl}}/api/users/me
+Authorization: Bearer {{token}}
+
+### 4. Get all accommodations (public)
+GET {{baseUrl}}/api/accommodations
+
+### 5. Get accommodations filtered by location (public)
+GET {{baseUrl}}/api/accommodations?location=New York
+
+### 6. Create an accommodation (host/admin)
+POST {{baseUrl}}/api/accommodations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Sunny Loft in Johannesburg",
+  "location": "Johannesburg",
+  "type": "Entire loft",
+  "description": "Bright loft close to the city centre.",
+  "guests": 3,
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "amenities": ["wifi", "kitchen"],
+  "images": ["https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"],
+  "price": 200,
+  "weeklyDiscount": 10,
+  "cleaningFee": 40,
+  "serviceFee": 35,
+  "occupancyTaxes": 20
+}
+
+### 7. Get one accommodation by id (replace the id)
+GET {{baseUrl}}/api/accommodations/PASTE_ACCOMMODATION_ID
+
+### 8. Update an accommodation (owner/admin)
+PUT {{baseUrl}}/api/accommodations/PASTE_ACCOMMODATION_ID
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "price": 250
+}
+
+### 9. Create a reservation (any logged-in user)
+POST {{baseUrl}}/api/reservations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "accommodationId": "PASTE_ACCOMMODATION_ID",
+  "checkIn": "2026-08-01",
+  "checkOut": "2026-08-08",
+  "guests": 2
+}
+
+### 10. My reservations (as a guest)
+GET {{baseUrl}}/api/reservations/user
+Authorization: Bearer {{token}}
+
+### 11. Reservations on my listings (as a host)
+GET {{baseUrl}}/api/reservations/host
+Authorization: Bearer {{token}}
+
+### 12. Delete a reservation
+DELETE {{baseUrl}}/api/reservations/PASTE_RESERVATION_ID
+Authorization: Bearer {{token}}
+
+### 13. Delete an accommodation (owner/admin)
+DELETE {{baseUrl}}/api/accommodations/PASTE_ACCOMMODATION_ID
+Authorization: Bearer {{token}}
